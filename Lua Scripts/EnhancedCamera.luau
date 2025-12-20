@@ -5,12 +5,15 @@
         local EnhancedCamera = require(path.to.EnhancedCamera)
         local Modifier = EnhancedCamera.Modifier
         
-        -- Create an enhanced camera instance
+        -- Create an enhanced camera instance (cached - multiple scripts get the same instance)
         local camera = workspace.CurrentCamera
-        local enhancedCam = EnhancedCamera:__new(camera)
+        local enhancedCam = EnhancedCamera.new(camera)
+        
+        -- Initialize the PreRender loop (only needs to be called once per camera)
+        enhancedCam:init()
         
         -- Create a modifier for zooming in
-        local zoomModifier = Modifier:__new("ZoomIn")
+        local zoomModifier = Modifier.new("ZoomIn")
         zoomModifier:setOperation("multiply")
         zoomModifier:setValue(0.8) -- 80% FOV (zoomed in)
         zoomModifier:setPriority(1)
@@ -25,24 +28,54 @@
         -- ... later ...
         zoomModifier:disable() -- Smoothly fades out over 0.3 seconds
         
-        -- Update the camera FOV every frame (call this in a loop for smooth transitions)
-        RunService.Heartbeat:Connect(function()
-            enhancedCam:update()
-        end)
-        
+        -- The camera FOV updates automatically via PreRender after init() is called
         -- Or apply immediately without fading
         enhancedCam:applyModifiers()
+        
+    Note: Multiple scripts can call EnhancedCamera.new() on the same camera and they will
+    receive the same cached instance, allowing them to add modifiers independently.
 ]]
+
+local RunService = game:GetService("RunService")
 
 local module = {}
 module.__index = module
 
-function module:__new(camera)
+-- Cache for camera instances
+local cameraCache = {}
+
+function module.new(camera)
+    -- Check if we already have an instance for this camera
+    if cameraCache[camera] then
+        return cameraCache[camera]
+    end
+    
+    -- Create new instance
     local self = setmetatable({}, module)
     self.camera = camera
     self.basefov = camera.FieldOfView
     self.modifiers = {}
+    self.initsignal = nil
+    
+    -- Cache the instance
+    cameraCache[camera] = self
+    
     return self
+end
+
+function module:init()
+    -- Disconnect existing signal if it exists
+    if self.initsignal then
+        self.initsignal:Disconnect()
+        self.initsignal = nil
+    end
+    
+    -- Create new PreRender connection
+    self.initsignal = RunService.PreRender:Connect(function()
+        self:update()
+    end)
+    
+    return self.initsignal
 end
 
 --[[
@@ -59,7 +92,7 @@ Modifier will contain {
 
 local modifierClass = {}
 modifierClass.__index = modifierClass
-function modifierClass:__new(name)
+function modifierClass.new(name)
     local self = setmetatable({}, modifierClass)
     self.name = name
     self.priority = 0
@@ -83,7 +116,7 @@ end
 function modifierClass:setPriority(priority: number)
     self.priority = priority
 end
-function modifierClass:setOperation(operation: string | ((fov: number, value: number) -> number))
+function modifierClass:setOperation(operation: ("add" | "multiply") | ((fov: number, value: number) -> number))
     self.operation = operation
 end
 function modifierClass:setValue(value: number)
@@ -167,13 +200,14 @@ function module:update()
          if typeof(modifier.operation) == "function" then
             currentFov = modifier.operation(currentFov, (modifier.value or 0) * fadeProgress)
          elseif modifier.operation == "add" then
-            currentFov = currentFov + (modifier.value or 0) * fadeProgress
+            currentFov += (modifier.value or 0) * fadeProgress
          elseif modifier.operation == "multiply" then
             -- For multiply, interpolate between 1 (no effect) and modifier.value (full effect)
-            currentFov = currentFov * (1 + ((modifier.value or 1) - 1) * fadeProgress)
+            currentFov *= (1 + ((modifier.value or 1) - 1) * fadeProgress)
          end
       end
    end
+
    self.camera.FieldOfView = currentFov
 end
 
