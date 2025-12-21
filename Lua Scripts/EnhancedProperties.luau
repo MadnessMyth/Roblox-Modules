@@ -130,7 +130,7 @@ function module:init()
 		self:update()
 	end)
 
-	return self.initsignal
+	return self, self.initsignal
 end
 
 --[[
@@ -139,6 +139,7 @@ end
 ]]
 function module:refreshBaseValue()
 	self.baseValue = self.instance[self.propertyName]
+	return self
 end
 
 --[[
@@ -205,6 +206,7 @@ function modifierClass:enable()
 		self.enabled = true
 		self.toggledSince = os.clock()
 	end
+	return self
 end
 function modifierClass:disable()
 	if self.enabled then
@@ -214,27 +216,35 @@ function modifierClass:disable()
 		self.enabled = false
 		self.toggledSince = os.clock()
 	end
+	return self
 end
 function modifierClass:setPriority(priority: number)
 	self.priority = priority
+	return self
 end
 function modifierClass:setOperation(operation: ("add" | "multiply") | ((currentValue: number, modifierValue: number) -> number))
 	self.operation = operation
+	return self
 end
 function modifierClass:setValue(value: number)
 	self.value = value
+	return self
 end
 function modifierClass:setFadeInTime(time: number)
 	self.fadeinTime = time
+	return self
 end
 function modifierClass:setFadeOutTime(time: number)
 	self.fadeoutTime = time
+	return self
 end
 function modifierClass:setBeginAnimationLength(time: number)
 	self.fadeinTime = time
+	return self
 end
 function modifierClass:setEndAnimationLength(time: number)
 	self.fadeoutTime = time
+	return self
 end
 function modifierClass:setFloatCurve(curve: FloatCurve | Enum.KeyInterpolationMode)
 	if typeof(curve) == "EnumItem" then
@@ -260,6 +270,7 @@ function modifierClass:setFloatCurve(curve: FloatCurve | Enum.KeyInterpolationMo
 	else
 		self.floatCurve = nil -- Linear (default)
 	end
+	return self
 end
 
 local function __sortModifiers(a, b)
@@ -269,6 +280,7 @@ end
 function module:addModifier(modifier)
 	table.insert(self.modifiers, modifier)
 	table.sort(self.modifiers, __sortModifiers)
+	return self
 end
 
 function module:removeModifier(modifier)
@@ -278,6 +290,7 @@ function module:removeModifier(modifier)
 			break
 		end
 	end
+	return self
 end
 
 --[[
@@ -298,6 +311,7 @@ function module:applyModifiers()
 		end
 	end
 	self.instance[self.propertyName] = currentValue
+	return self
 end
 
 function module:update()
