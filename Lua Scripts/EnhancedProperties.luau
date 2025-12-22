@@ -49,6 +49,62 @@
 
 local RunService = game:GetService("RunService")
 
+-- Signal class for simple custom events
+
+local Signal = {}
+Signal.__index = Signal
+
+function Signal.new()
+    local self = setmetatable({}, Signal)
+    self._connections = {}
+    return self
+end
+
+function Signal:Connect(callback)
+    assert(type(callback) == "function", "Callback must be a function")
+    local connection = {}
+    connection.Connected = true
+    function connection:Disconnect()
+        if connection.Connected then
+            connection.Connected = false
+            for i, conn in ipairs(self._connections) do
+                if conn == connection then
+                    table.remove(self._connections, i)
+                    break
+                end
+            end
+        end
+    end
+    table.insert(self._connections, connection)
+    connection._callback = callback
+    connection._signal = self
+    return connection
+end
+
+function Signal:Fire(...)
+    for _, connection in ipairs(self._connections) do
+        if connection.Connected then
+            task.spawn(connection._callback, ...)
+        end
+    end
+end
+
+function Signal:DisconnectAll()
+    for _, connection in ipairs(self._connections) do
+        connection.Connected = false
+    end
+    self._connections = {}
+end
+
+-- Signal metatable for syntax consistency
+Signal.Connect = Signal.Connect
+Signal.Fire = Signal.Fire
+Signal.DisconnectAll = Signal.DisconnectAll
+
+-- Expose Signal class
+local EnhancedSignal = Signal
+
+
 -- Preset FloatCurve instances
 local function createFloatCurve(Type: Enum.KeyInterpolationMode): FloatCurve
 	local floatCurve = Instance.new("FloatCurve")
@@ -111,6 +167,16 @@ function module.new(instance, propertyName)
 	self.baseValue = baseValue
 	self.modifiers = {}
 	self.initsignal = nil
+	self._cacheKey = cacheKey -- Store cache key for cleanup
+	self._destroyed = false
+	
+	-- Auto-destroy when instance is removed (even if init() wasn't called)
+	self._ancestryConnection = instance.AncestryChanged:Connect(function()
+		if not instance.Parent then
+			-- Instance was removed from the game tree
+			self:destroy()
+		end
+	end)
 
 	-- Cache the instance
 	propertyCache[cacheKey] = self
@@ -119,6 +185,11 @@ function module.new(instance, propertyName)
 end
 
 function module:init()
+	if self._destroyed then
+		warn("Cannot init destroyed EnhancedProperty instance")
+		return self
+	end
+	
 	-- Disconnect existing signal if it exists
 	if self.initsignal then
 		self.initsignal:Disconnect()
@@ -138,8 +209,53 @@ end
 	Useful if the property was changed externally and you want to reset the base.
 ]]
 function module:refreshBaseValue()
+	if self._destroyed or not self.instance then
+		warn("Cannot refresh base value on destroyed EnhancedProperty instance")
+		return self
+	end
 	self.baseValue = self.instance[self.propertyName]
 	return self
+end
+
+--[[
+	Destroys the EnhancedProperty instance, cleaning up all resources.
+	Disconnects the update loop, removes from cache, and destroys all modifiers.
+]]
+function module:destroy()
+	if self._destroyed then
+		return
+	end
+	
+	self._destroyed = true
+	
+	-- Disconnect update signal
+	if self.initsignal then
+		self.initsignal:Disconnect()
+		self.initsignal = nil
+	end
+	
+	-- Disconnect ancestry connection
+	if self._ancestryConnection then
+		self._ancestryConnection:Disconnect()
+		self._ancestryConnection = nil
+	end
+	
+	-- Destroy all modifiers
+	for _, modifier in self.modifiers do
+		modifier:destroy()
+	end
+	self.modifiers = {}
+	
+	-- Remove from cache
+	if self._cacheKey and propertyCache[self._cacheKey] == self then
+		propertyCache[self._cacheKey] = nil
+	end
+	
+	-- Clear references
+	self.instance = nil
+	self.propertyName = nil
+	self.baseValue = nil
+	self._cacheKey = nil
 end
 
 --[[
@@ -169,6 +285,17 @@ function modifierClass.new(name)
 	self.floatCurve = nil
 	self.toggledSince = -9999
 	self.startProgress = 0 -- Progress when toggle started (0-1)
+	
+	-- Signals
+	self.Began = Signal.new()
+	self.Ended = Signal.new()
+	self.FadedIn = Signal.new()
+	self.FadedOut = Signal.new()
+	
+	-- Track fade completion state
+	self._hasFadedIn = false
+	self._hasFadedOut = false
+	
 	return self
 end
 
@@ -205,6 +332,13 @@ function modifierClass:enable()
 
 		self.enabled = true
 		self.toggledSince = os.clock()
+		
+		-- Reset fade completion flags
+		self._hasFadedIn = false
+		self._hasFadedOut = false
+		
+		-- Fire Began signal
+		self.Began:Fire()
 	end
 	return self
 end
@@ -215,6 +349,13 @@ function modifierClass:disable()
 
 		self.enabled = false
 		self.toggledSince = os.clock()
+		
+		-- Reset fade completion flags
+		self._hasFadedIn = false
+		self._hasFadedOut = false
+		
+		-- Fire Ended signal
+		self.Ended:Fire()
 	end
 	return self
 end
@@ -273,17 +414,63 @@ function modifierClass:setFloatCurve(curve: FloatCurve | Enum.KeyInterpolationMo
 	return self
 end
 
+--[[
+	Destroys the modifier, cleaning up all resources.
+	Disconnects all signals and clears references.
+]]
+function modifierClass:destroy()
+	if self._destroyed then
+		return
+	end
+	
+	self._destroyed = true
+	
+	-- Disconnect all signals
+	if self.Began then
+		self.Began:DisconnectAll()
+		self.Began = nil
+	end
+	if self.Ended then
+		self.Ended:DisconnectAll()
+		self.Ended = nil
+	end
+	if self.FadedIn then
+		self.FadedIn:DisconnectAll()
+		self.FadedIn = nil
+	end
+	if self.FadedOut then
+		self.FadedOut:DisconnectAll()
+		self.FadedOut = nil
+	end
+	
+	-- Clear references
+	self.floatCurve = nil
+	self.operation = nil
+	self.name = nil
+end
+
 local function __sortModifiers(a, b)
 	return a.priority > b.priority
 end
 
 function module:addModifier(modifier)
+	if self._destroyed then
+		warn("Cannot add modifier to destroyed EnhancedProperty instance")
+		return self
+	end
+	if modifier._destroyed then
+		warn("Cannot add destroyed modifier")
+		return self
+	end
 	table.insert(self.modifiers, modifier)
 	table.sort(self.modifiers, __sortModifiers)
 	return self
 end
 
 function module:removeModifier(modifier)
+	if self._destroyed then
+		return self
+	end
 	for i = #self.modifiers, 1, -1 do
 		if self.modifiers[i] == modifier then
 			table.remove(self.modifiers, i)
@@ -298,9 +485,13 @@ end
     Use update() for smooth fading transitions.
 ]]
 function module:applyModifiers()
+	if self._destroyed then
+		return self
+	end
+	
 	local currentValue = self.baseValue
 	for _, modifier in self.modifiers do
-		if modifier.enabled then
+		if modifier.enabled and not modifier._destroyed then
 			if typeof(modifier.operation) == "function" then
 				currentValue = modifier.operation(currentValue, modifier.value)
 			elseif modifier.operation == "add" then
@@ -315,52 +506,84 @@ function module:applyModifiers()
 end
 
 function module:update()
+	if self._destroyed or not self.instance or not self.instance.Parent then
+		-- Instance was destroyed or removed, clean up
+		if not self._destroyed then
+			self:destroy()
+		end
+		return
+	end
+	
 	local currentValue = self.baseValue
 	for _, modifier in self.modifiers do
-		-- Calculate fade progress based on toggledSince and fade times
-		local fadeDuration = modifier.enabled and (modifier.fadeinTime or 1) or (modifier.fadeoutTime or 1)
-		local now = os.clock()
-		local rawProgress = modifier.enabled and 1 or 0
+		-- Skip destroyed modifiers
+		if modifier._destroyed then
+			-- Skip to next modifier
+		else
+			-- Calculate fade progress based on toggledSince and fade times
+			local fadeDuration = modifier.enabled and (modifier.fadeinTime or 1) or (modifier.fadeoutTime or 1)
+			local now = os.clock()
+			local rawProgress = modifier.enabled and 1 or 0
 
-		if modifier.toggledSince then
-			local diff = now - modifier.toggledSince
-			local startProgress = modifier.startProgress or (modifier.enabled and 0 or 1)
+			if modifier.toggledSince then
+				local diff = now - modifier.toggledSince
+				local startProgress = modifier.startProgress or (modifier.enabled and 0 or 1)
 
-			if modifier.enabled then
-				-- Fading in: interpolate from startProgress to 1
-				if diff < fadeDuration then
-					local fadeAmount = diff / fadeDuration
-					rawProgress = startProgress + (1 - startProgress) * fadeAmount
+				if modifier.enabled then
+					-- Fading in: interpolate from startProgress to 1
+					if diff < fadeDuration then
+						local fadeAmount = diff / fadeDuration
+						rawProgress = startProgress + (1 - startProgress) * fadeAmount
+					else
+						rawProgress = 1
+						-- Fire FadedIn signal when fade-in completes
+						if not modifier._hasFadedIn then
+							modifier._hasFadedIn = true
+							modifier.FadedIn:Fire()
+						end
+					end
 				else
-					rawProgress = 1
+					-- Fading out: interpolate from startProgress to 0
+					if diff < fadeDuration then
+						local fadeAmount = diff / fadeDuration
+						rawProgress = startProgress * (1 - fadeAmount)
+					else
+						rawProgress = 0
+						-- Fire FadedOut signal when fade-out completes
+						if not modifier._hasFadedOut then
+							modifier._hasFadedOut = true
+							modifier.FadedOut:Fire()
+						end
+					end
 				end
 			else
-				-- Fading out: interpolate from startProgress to 0
-				if diff < fadeDuration then
-					local fadeAmount = diff / fadeDuration
-					rawProgress = startProgress * (1 - fadeAmount)
-				else
-					rawProgress = 0
-				end
+				rawProgress = modifier.enabled and 1 or 0
 			end
-		else
-			rawProgress = modifier.enabled and 1 or 0
-		end
 
-		-- Apply FloatCurve if available
-		local fadeProgress = rawProgress
-		if modifier.floatCurve then
-			fadeProgress = modifier.floatCurve:GetValueAtTime(rawProgress)
-		end
+			-- Apply FloatCurve if available
+			local fadeProgress = rawProgress
+			if modifier.floatCurve then
+				fadeProgress = modifier.floatCurve:GetValueAtTime(rawProgress)
+			end
+			
+			-- Check for fade completion after FloatCurve is applied (for edge cases)
+			if modifier.enabled and fadeProgress >= 1 and not modifier._hasFadedIn then
+				modifier._hasFadedIn = true
+				modifier.FadedIn:Fire()
+			elseif not modifier.enabled and fadeProgress <= 0 and not modifier._hasFadedOut then
+				modifier._hasFadedOut = true
+				modifier.FadedOut:Fire()
+			end
 
-		if fadeProgress > 0 then
-			if typeof(modifier.operation) == "function" then
-				currentValue = modifier.operation(currentValue, (modifier.value or 0) * fadeProgress)
-			elseif modifier.operation == "add" then
-				currentValue += (modifier.value or 0) * fadeProgress
-			elseif modifier.operation == "multiply" then
-				-- For multiply, interpolate between 1 (no effect) and modifier.value (full effect)
-				currentValue *= (1 + ((modifier.value or 1) - 1) * fadeProgress)
+			if fadeProgress > 0 then
+				if typeof(modifier.operation) == "function" then
+					currentValue = modifier.operation(currentValue, (modifier.value or 0) * fadeProgress)
+				elseif modifier.operation == "add" then
+					currentValue += (modifier.value or 0) * fadeProgress
+				elseif modifier.operation == "multiply" then
+					-- For multiply, interpolate between 1 (no effect) and modifier.value (full effect)
+					currentValue *= (1 + ((modifier.value or 1) - 1) * fadeProgress)
+				end
 			end
 		end
 	end
