@@ -25,7 +25,7 @@ local StudioService = game:GetService("StudioService")
 local MyPlayer = Players.LocalPlayer
 local myName = MyPlayer and MyPlayer.Name or "LocalPlayer"
 
-local version = "v1.0.0-release"
+local version = "v1r.0.1"
 
 local MPL = require("@self/MPL")
 
@@ -369,10 +369,15 @@ if Networking then
 			math.min(size.X, 1024),
 			math.min(size.Y, 1024)
 		)
-
+		local s = max/(max.Magnitude/12)
+		local ratio = editableImage.Size.X / editableImage.Size.Y
 		local newEditableImage = AssetService:CreateEditableImage(
-			{Size = max/(max.Magnitude/16)}
-		)
+				{
+					Size = Vector2.new(
+					math.max(8 * ratio, s.X),
+					math.max(8, s.Y)
+				)
+		})
 
 		newEditableImage:DrawImageTransformed(
 			Vector2.zero, newEditableImage.Size / editableImage.Size, 0, editableImage, {
@@ -1156,7 +1161,7 @@ end
 				<bool name="Disabled">false</bool>
 				<Content name="LinkedSource"><null></null></Content>
 				<token name="RunContext">3</token>
-				<string name="ScriptGuid">{32D27FE5-14FD-4EDD-829B-17B9BA007A50}</string>
+				<string name="ScriptGuid">{A550975F-8A70-476F-81F4-901CAE5201B6}</string>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 				<bool name="DefinesCapabilities">false</bool>
@@ -2441,7 +2446,7 @@ function MPL.new(plugin: Plugin)
 end
 
 return MPL]]></ProtectedString>
-					<string name="ScriptGuid">{AF6E6F0C-6C3A-4321-BEA9-741C6C5E6B6D}</string>
+					<string name="ScriptGuid">{91E4A469-6B1F-4D56-BC54-53F133C1489E}</string>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
@@ -3805,7 +3810,7 @@ end
 
 return t
 ]]></ProtectedString>
-						<string name="ScriptGuid">{E9F473CE-AEC8-4504-BFFF-07DB555A3CC1}</string>
+						<string name="ScriptGuid">{E22F4028-F19C-4246-8FB2-5453AA7A4203}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -3829,7 +3834,7 @@ local Cryptography = table.freeze({
 })
 
 return Cryptography]]></ProtectedString>
-					<string name="ScriptGuid">{D063BA02-B67A-4FA3-ABB8-1EE38DC8E6A2}</string>
+					<string name="ScriptGuid">{0D332245-C293-40B9-A8A1-3EF138762C16}</string>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
@@ -3848,7 +3853,7 @@ local Algorithms = table.freeze({
 })
 
 return Algorithms]]></ProtectedString>
-						<string name="ScriptGuid">{4F46BE2F-CB14-4E5B-80AA-12FDE8EB309E}</string>
+						<string name="ScriptGuid">{3F8978F8-22FD-40F7-AE82-DACB4EC9BAEB}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -4077,7 +4082,7 @@ local function Adler(Message: buffer): number
 end
 
 return Adler]]></ProtectedString>
-							<string name="ScriptGuid">{6EE2B736-98FD-4B44-B247-1900EF644F42}</string>
+							<string name="ScriptGuid">{4C0BDBC7-057B-4123-8314-4B9398061427}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -4164,7 +4169,7 @@ local function CRC32(Message: buffer, Mode: "Jam" | "Iso"?, Hex: boolean?): numb
 end
 
 return CRC32]]></ProtectedString>
-							<string name="ScriptGuid">{2736D53F-BBB3-4D22-AF42-167CF273E1D4}</string>
+							<string name="ScriptGuid">{9748FF71-4C2D-45A7-8D84-DA0BD32C3FD0}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -4188,7 +4193,7 @@ local Algorithms = table.freeze({
 })
 
 return Algorithms]]></ProtectedString>
-						<string name="ScriptGuid">{FA7F755C-9B0B-4157-9131-D49298DDACBE}</string>
+						<string name="ScriptGuid">{5EF06E52-F9A9-40C5-B109-D86F76455C27}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -4457,7 +4462,7 @@ function AEAD.Decrypt(Ciphertext: buffer, Key: buffer, Nonce: buffer, Tag: buffe
 end
 
 return AEAD]]></ProtectedString>
-							<string name="ScriptGuid">{C76870DC-49C3-4CA3-AC42-2821333EE5F1}</string>
+							<string name="ScriptGuid">{DCA44550-6126-4DC6-8B4D-AAFCBDE44F2B}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -4882,7 +4887,7 @@ function ChaCha.XChaCha20(Data: buffer, Key: buffer, Nonce: buffer, Counter: num
 end
 
 return ChaCha]]></ProtectedString>
-								<string name="ScriptGuid">{69998D72-733F-4BDD-9007-74F14DB00CF1}</string>
+								<string name="ScriptGuid">{E1C6FE86-34B4-4B91-8B8C-40F0250D0019}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -5112,7 +5117,7 @@ local function Poly1305(Message: buffer, Key: buffer): buffer
 end
 
 return Poly1305]]></ProtectedString>
-								<string name="ScriptGuid">{B7D95A19-33E5-49A6-BCDD-84648E7EFB2A}</string>
+								<string name="ScriptGuid">{676C5BE0-0384-4CC3-B85D-AB4AFE3D420D}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -5856,7 +5861,7 @@ function AES.Decrypt(Ciphertext: buffer, Key: buffer, IV: buffer, Tag: buffer, A
 end
 
 return AES]]></ProtectedString>
-							<string name="ScriptGuid">{1142FDC0-A4C4-4E48-91A1-14629F65DB27}</string>
+							<string name="ScriptGuid">{1C3029D9-4323-4542-826E-5C46EC27A52C}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -6044,7 +6049,7 @@ function Simon.Decrypt(CipherBuffer: buffer, KeyBuffer: buffer): buffer
 end
 
 return Simon]]></ProtectedString>
-							<string name="ScriptGuid">{7DBC4DB7-F3F3-4360-88A5-DC29D978D490}</string>
+							<string name="ScriptGuid">{74144803-19DD-4427-B405-8852AF235BCF}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -6266,7 +6271,7 @@ function Speck.Decrypt(CipherBuffer: buffer, KeyBuffer: buffer): buffer
 end
 
 return Speck]]></ProtectedString>
-							<string name="ScriptGuid">{8AA20675-380E-4A2E-993A-79DAB743A3FB}</string>
+							<string name="ScriptGuid">{32C443D5-3353-4655-A171-AACCBCF8DB17}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -6387,7 +6392,7 @@ local function XOR(StringBuffer: buffer, KeyBuffer: buffer): buffer
 end
 
 return XOR]]></ProtectedString>
-							<string name="ScriptGuid">{BC56D148-B40A-4CFC-8C3A-E66D6898DEB5}</string>
+							<string name="ScriptGuid">{24C23D12-F467-48E4-A784-B4C109B82268}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -6416,7 +6421,7 @@ local Algorithms = table.freeze({
 })
 
 return Algorithms]]></ProtectedString>
-						<string name="ScriptGuid">{440345B8-5626-4EA5-BF9D-275BA2C97DFC}</string>
+						<string name="ScriptGuid">{6982AB30-E95A-46B4-B8AE-A5E009735C83}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -6938,7 +6943,7 @@ local function BLAKE2b(InputData: buffer, OutputLength: number?, KeyData: buffer
 end
 
 return BLAKE2b]]></ProtectedString>
-							<string name="ScriptGuid">{2F261918-5237-41CA-B814-3E960365EEA3}</string>
+							<string name="ScriptGuid">{72AD6883-430D-47ED-8EBB-2F679F0B31B9}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -7432,7 +7437,7 @@ function Blake3.DeriveKey(Context: buffer): (buffer, number?) -> (string, buffer
 end
 
 return Blake3]]></ProtectedString>
-							<string name="ScriptGuid">{26D3FAE5-87B4-4267-8A12-A549823FA4DB}</string>
+							<string name="ScriptGuid">{E76A9F50-B2C7-4DF1-A574-2BC87F74EE8B}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -7532,7 +7537,7 @@ local function HMAC(Message: buffer, Key: buffer, HashFunction: HashFunction, Bl
 end
 
 return HMAC]]></ProtectedString>
-							<string name="ScriptGuid">{F4A1A424-8E4A-4443-ADF6-84DE9876AD0D}</string>
+							<string name="ScriptGuid">{FE9FCE22-8122-4D47-BCFE-2788AE28941B}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -7690,7 +7695,7 @@ local function MD5(Message: buffer, Salt: buffer?): (string, buffer)
 end
 
 return MD5]]></ProtectedString>
-							<string name="ScriptGuid">{ACABEC7C-5525-44BA-AE13-81A935363BD6}</string>
+							<string name="ScriptGuid">{908A778E-FB3F-44AA-A7E9-EBCC16014F04}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -7817,7 +7822,7 @@ local function MurmurHash3(Message: buffer, Seed: number?): number
 end
 
 return MurmurHash3]]></ProtectedString>
-							<string name="ScriptGuid">{61B10BAB-9F58-4DD1-B390-19B1E5987D29}</string>
+							<string name="ScriptGuid">{74C18638-DE63-4DAD-99EB-AE6322F371CE}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -7958,7 +7963,7 @@ local function SHA1(Message: buffer, Salt: buffer?): string
 end
 
 return SHA1]]></ProtectedString>
-							<string name="ScriptGuid">{7D02A632-C624-4FB0-B12C-46BCF870A59D}</string>
+							<string name="ScriptGuid">{B3D87EB9-DCB6-4130-816A-2A9A841B4485}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -7980,7 +7985,7 @@ return {
 	SHA384 = require("@self/SHA384"),
 	SHA512 = require("@self/SHA512"),
 }]]></ProtectedString>
-							<string name="ScriptGuid">{FF3C1E8A-90A8-4A36-93A6-C29ADF3E02AC}</string>
+							<string name="ScriptGuid">{EF9231AD-3BD6-459E-82BD-934F99FD3691}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -8112,7 +8117,7 @@ local function SHA224(Message: buffer): (string, buffer)
 end
 
 return SHA224]]></ProtectedString>
-								<string name="ScriptGuid">{D09250F3-BF49-406B-B847-D1583620F706}</string>
+								<string name="ScriptGuid">{38B0717E-18DC-4E36-94F6-384AC69D4946}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -8245,7 +8250,7 @@ local function SHA256(Message: buffer): (string, buffer)
 end
 
 return SHA256]]></ProtectedString>
-								<string name="ScriptGuid">{BB547359-2428-4002-9566-9EA3445A4EB9}</string>
+								<string name="ScriptGuid">{0785AF39-8757-47F8-BB85-01B8C529A405}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -8489,7 +8494,7 @@ local function SHA384(Message: buffer): (string, buffer)
 end
 
 return SHA384]]></ProtectedString>
-								<string name="ScriptGuid">{70C0DF76-B2F8-4FAF-8F78-5C0F6F82D9F7}</string>
+								<string name="ScriptGuid">{33812A1D-D519-4DB6-AC9A-C16D2B9B5BED}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -8740,7 +8745,7 @@ local function SHA512(Message: buffer): (string, buffer)
 end
 
 return SHA512]]></ProtectedString>
-								<string name="ScriptGuid">{9157A083-D02A-4C91-96AE-C1C04948B715}</string>
+								<string name="ScriptGuid">{28B1ADCF-ADC7-40AF-B7CF-ED6617F59123}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -9114,7 +9119,7 @@ function SHA3.SHAKE256(Message: buffer, OutputBytes: number): (string, buffer)
 end
 
 return SHA3]]></ProtectedString>
-							<string name="ScriptGuid">{3EC4F208-49AA-4D14-8AC6-A47A583434E5}</string>
+							<string name="ScriptGuid">{D61077AE-07E9-468F-868F-5E7182F4971F}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -9254,7 +9259,7 @@ local function XXH32(Message: buffer, Seed: number?): number
 end
 
 return XXH32]]></ProtectedString>
-							<string name="ScriptGuid">{2FAD0676-C07E-41F7-B4B5-63ADDC019D90}</string>
+							<string name="ScriptGuid">{C03609FF-DBCD-4F12-BB59-CB57FE231CB4}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -9776,7 +9781,7 @@ function KMAC.KMAC256(Data: buffer, Key: buffer, Output: buffer, CustomBuffer: b
 end
 
 return KMAC]]></ProtectedString>
-							<string name="ScriptGuid">{51498DC0-C6E9-4A53-A007-D09FE7F6ADCD}</string>
+							<string name="ScriptGuid">{AFC9F15B-00A0-430D-89F6-3554C4503BE5}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -9799,7 +9804,7 @@ local Algorithms = table.freeze({
 })
 
 return Algorithms]]></ProtectedString>
-						<string name="ScriptGuid">{037956EE-E7A2-4CB6-85B2-218D31C95D2C}</string>
+						<string name="ScriptGuid">{D9242A7B-EE13-4629-9116-2E947DC1361E}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -10069,7 +10074,7 @@ return {
 	Encode = Encode,
 	Decode = Decode
 }]]></ProtectedString>
-							<string name="ScriptGuid">{EBEAAB5A-D7E2-4865-B42C-43C24B0BA080}</string>
+							<string name="ScriptGuid">{46D39532-4D73-4284-AC30-76C8DCB5FB73}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -10706,7 +10711,7 @@ CSPRNG.BytesLeft = GatherEntropy()
 GenerateBlock()
 
 return CSPRNG]]></ProtectedString>
-							<string name="ScriptGuid">{4591E61C-B08C-4CA5-8335-66855ECBAC97}</string>
+							<string name="ScriptGuid">{4997512B-BB0B-4144-9AF0-2611A78044E3}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -11018,7 +11023,7 @@ end
 return function(Message: buffer, Length: number?): buffer
 	return ProcessMessage(INITIAL_VECTORS, 0, Message, Length or 32)
 end]]></ProtectedString>
-								<string name="ScriptGuid">{8C9E1802-6E85-46DE-959E-5445959D46F3}</string>
+								<string name="ScriptGuid">{B2A7B786-3B40-48C1-B35E-2084A20C811D}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -11280,7 +11285,7 @@ local function ChaCha20(Data: buffer, Key: buffer, Nonce: buffer, Counter: numbe
 end
 
 return ChaCha20]]></ProtectedString>
-								<string name="ScriptGuid">{ACEA2747-5CFD-44D6-A182-E4E605C72BFF}</string>
+								<string name="ScriptGuid">{7CBCACE9-FB21-4D78-819E-6B090821C75B}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -11446,7 +11451,7 @@ function Conversions.FromHex(Hex: string | buffer): buffer
 end
 
 return Conversions]]></ProtectedString>
-								<string name="ScriptGuid">{3102B329-F8D5-4497-B666-B1ED668CF0F7}</string>
+								<string name="ScriptGuid">{0CFDB09A-61A9-4B11-A954-A681CAF14248}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -11613,7 +11618,7 @@ function Conversions.FromHex(Hex: string | buffer): buffer
 end
 
 return Conversions]]></ProtectedString>
-							<string name="ScriptGuid">{978819AD-D7BF-4ACA-B8EB-C293E08CF3B9}</string>
+							<string name="ScriptGuid">{FFBE0B3E-6146-4817-BB97-0E530D4091A7}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -11653,7 +11658,7 @@ local function RandomString(Length: number, AsBuffer: boolean?): string | buffer
 end
 
 return RandomString]]></ProtectedString>
-							<string name="ScriptGuid">{DDB972E0-A655-4DCC-8B7A-11A0250F9542}</string>
+							<string name="ScriptGuid">{9A8FFAE6-67D5-4407-91B6-7BE65F7C6885}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -11675,7 +11680,7 @@ local Algorithms = table.freeze({
 })
 
 return Algorithms]]></ProtectedString>
-						<string name="ScriptGuid">{56A7F82B-822F-48B3-8B8C-4854D432C075}</string>
+						<string name="ScriptGuid">{2062AE8F-30A1-4737-B533-C45D988825B7}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -12074,7 +12079,7 @@ function EDDSA.VerifyBatch(Entries: {SignatureEntry}): boolean
 end
 
 return EDDSA]]></ProtectedString>
-							<string name="ScriptGuid">{720C2D62-3754-4986-8D96-96ADEFCE719F}</string>
+							<string name="ScriptGuid">{5A7D249F-AB61-4F90-BCBB-C283C4156067}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -12710,7 +12715,7 @@ CSPRNG.BytesLeft = GatherEntropy()
 GenerateBlock()
 
 return CSPRNG]]></ProtectedString>
-								<string name="ScriptGuid">{E9BCA801-3C1B-4560-B00D-C715152AFFE0}</string>
+								<string name="ScriptGuid">{97F4A3A4-3B25-46B4-A50C-1ACD5A5C83E3}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -13022,7 +13027,7 @@ end
 return function(Message: buffer, Length: number?): buffer
 	return ProcessMessage(INITIAL_VECTORS, 0, Message, Length or 32)
 end]]></ProtectedString>
-									<string name="ScriptGuid">{3216024B-18C5-4BD0-B1ED-2D81B26E2A8E}</string>
+									<string name="ScriptGuid">{0C6941B0-4412-46DA-9E2F-E2F039880A28}</string>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 									<bool name="DefinesCapabilities">false</bool>
@@ -13284,7 +13289,7 @@ local function ChaCha20(Data: buffer, Key: buffer, Nonce: buffer, Counter: numbe
 end
 
 return ChaCha20]]></ProtectedString>
-									<string name="ScriptGuid">{7FDE48A3-5367-454F-B017-E90CC781A1F5}</string>
+									<string name="ScriptGuid">{37B052BA-621E-40AB-9A4D-B6E59ACEC7BB}</string>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 									<bool name="DefinesCapabilities">false</bool>
@@ -13450,7 +13455,7 @@ function Conversions.FromHex(Hex: string | buffer): buffer
 end
 
 return Conversions]]></ProtectedString>
-									<string name="ScriptGuid">{F914FA8F-75FE-47C6-A0D9-E0B7A40CC7A2}</string>
+									<string name="ScriptGuid">{58F726B0-B81B-4215-A14C-EBE618E0BFEC}</string>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 									<bool name="DefinesCapabilities">false</bool>
@@ -13702,7 +13707,7 @@ buffer.copy(Point, 1 * COORD_SIZE, FieldPrime.Num(1), 0, COORD_SIZE)
 Curve25519.G = Point
 
 return Curve25519]]></ProtectedString>
-								<string name="ScriptGuid">{6371FA58-D639-4539-B317-0C9F23E57268}</string>
+								<string name="ScriptGuid">{8715E983-6DD9-4351-A656-EF53477DFC8A}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -14725,7 +14730,7 @@ function Edwards25519.Mul(BasePoint: buffer, ScalarBits: buffer, ScalarBitCount:
 end
 
 return Edwards25519]]></ProtectedString>
-								<string name="ScriptGuid">{1417AC64-9298-4296-8810-1A3D53F119E4}</string>
+								<string name="ScriptGuid">{9D1506CD-702D-4201-BB3D-767D96AB7915}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -15759,7 +15764,7 @@ function FieldPrime.Eqz(ElementA: buffer): boolean
 end
 
 return FieldPrime]]></ProtectedString>
-								<string name="ScriptGuid">{5760A7D6-0F01-4298-A5E9-B2C9E3B61A63}</string>
+								<string name="ScriptGuid">{8A6BFBB0-360F-4754-A6CF-A6CF262E7474}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -16153,7 +16158,7 @@ function FieldQuadratic.MakeRuleset(ScalarA: buffer, ScalarB: buffer): (buffer, 
 end
 
 return FieldQuadratic]]></ProtectedString>
-								<string name="ScriptGuid">{99C1ECAA-13C3-4CB7-AD40-A43BC0AE68CF}</string>
+								<string name="ScriptGuid">{6398E3A3-B03E-448A-858F-90327E5F5606}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -16539,7 +16544,7 @@ end
 
 return MultiPrecision
 ]]></ProtectedString>
-								<string name="ScriptGuid">{8AB9B8B6-D542-420A-8D84-947F9E9EE13B}</string>
+								<string name="ScriptGuid">{90375F5F-F7A5-4D69-8EBB-8219C8EF6D8E}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -16762,7 +16767,7 @@ local function SHA512(Message: buffer): buffer
 end
 
 return SHA512]]></ProtectedString>
-								<string name="ScriptGuid">{A3A81416-4324-41A7-A7B5-3C02D059AF55}</string>
+								<string name="ScriptGuid">{EE23DCDD-0F09-4645-9753-95CC45B55C18}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -17024,7 +17029,7 @@ end
 
 return Mask
 ]]></ProtectedString>
-								<string name="ScriptGuid">{49D89F91-6A6E-4719-9703-72714F0BFE8C}</string>
+								<string name="ScriptGuid">{93FDFAC9-130D-425D-B1FE-46BBBBC3D0A2}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -17326,7 +17331,7 @@ MlKem.MLKEM_1024 = {
 }
 
 return MlKem]]></ProtectedString>
-							<string name="ScriptGuid">{1028F03B-7B73-4C36-9EEC-9E1DC59F79F7}</string>
+							<string name="ScriptGuid">{07AB9CA1-C61E-4701-AAE8-0076C0978400}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -17962,7 +17967,7 @@ CSPRNG.BytesLeft = GatherEntropy()
 GenerateBlock()
 
 return CSPRNG]]></ProtectedString>
-								<string name="ScriptGuid">{FFE53FC2-834B-4E18-A507-63C13334D3E0}</string>
+								<string name="ScriptGuid">{58C80935-6E2D-4AD6-97C5-7CC421558319}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -18274,7 +18279,7 @@ end
 return function(Message: buffer, Length: number?): buffer
 	return ProcessMessage(INITIAL_VECTORS, 0, Message, Length or 32)
 end]]></ProtectedString>
-									<string name="ScriptGuid">{04CE6A7F-D8FD-446B-8315-72B2A83AE09F}</string>
+									<string name="ScriptGuid">{43DC3B19-2D6E-454B-8015-ED6B7294D795}</string>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 									<bool name="DefinesCapabilities">false</bool>
@@ -18536,7 +18541,7 @@ local function ChaCha20(Data: buffer, Key: buffer, Nonce: buffer, Counter: numbe
 end
 
 return ChaCha20]]></ProtectedString>
-									<string name="ScriptGuid">{7B7A3DC4-3EA0-4E60-9156-7733A260E042}</string>
+									<string name="ScriptGuid">{DABF3F81-4404-437A-BA6B-C6EC25253BAF}</string>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 									<bool name="DefinesCapabilities">false</bool>
@@ -18702,7 +18707,7 @@ function Conversions.FromHex(Hex: string | buffer): buffer
 end
 
 return Conversions]]></ProtectedString>
-									<string name="ScriptGuid">{1E1B2329-EC10-4803-BA36-9C44B21192D3}</string>
+									<string name="ScriptGuid">{629EAE27-A0CA-4F40-9DA3-D72C17CFD8CD}</string>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 									<bool name="DefinesCapabilities">false</bool>
@@ -18865,7 +18870,7 @@ function Compression.PolyDecompress(Poly: buffer, D: number)
 end
 
 return Compression]]></ProtectedString>
-								<string name="ScriptGuid">{29048D8E-FC6A-499F-BFFF-6132F06784D7}</string>
+								<string name="ScriptGuid">{2F8B5D9E-9E29-4E6A-A082-BF58404B8DCC}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -18956,7 +18961,7 @@ function Field.BufferReduce(Buffer: buffer, Count: number)
 end
 
 return Field]]></ProtectedString>
-								<string name="ScriptGuid">{E3C89F64-99B0-4D15-AA9E-5465E1985303}</string>
+								<string name="ScriptGuid">{512555A5-0435-4F69-8FE5-942A0F8E20D4}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -19282,7 +19287,7 @@ function Ntt.PolySub(F: buffer, G: buffer, H: buffer)
 end
 
 return Ntt]]></ProtectedString>
-								<string name="ScriptGuid">{753B8CF9-E003-49DB-A594-6F5763DEEC48}</string>
+								<string name="ScriptGuid">{84F06DAD-6E43-4B6E-A6B2-E8274D189A8C}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -19572,7 +19577,7 @@ Pke.MLKEM_1024 = {
 }
 
 return Pke]]></ProtectedString>
-								<string name="ScriptGuid">{F1966592-45BC-47AA-8C3D-23A914A868DF}</string>
+								<string name="ScriptGuid">{5CC6EC81-C096-4BC0-B3DA-E7EDA70ED7DE}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -19655,7 +19660,7 @@ function Params.CheckDecapParams(K: number, Eta1: number, Eta2: number, Du: numb
 end
 
 return Params]]></ProtectedString>
-								<string name="ScriptGuid">{1766ACC3-B805-4A9D-8136-9FFB848266CF}</string>
+								<string name="ScriptGuid">{3E1E8DBA-1346-4AC9-8F51-56A21F472C50}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -19855,7 +19860,7 @@ function PolyVec.VecDecompress(Vec: buffer, K: number, D: number)
 end
 
 return PolyVec]]></ProtectedString>
-								<string name="ScriptGuid">{251B5C83-7A84-48CD-A501-1C16C8F499BF}</string>
+								<string name="ScriptGuid">{1307A740-3927-4646-BF62-0E0529C7C638}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -20148,7 +20153,7 @@ function SHA3.SHAKE256(Message: buffer, OutputBytes: number): buffer
 end
 
 return SHA3]]></ProtectedString>
-								<string name="ScriptGuid">{A2703E18-E301-4BF3-9929-CDB4221168FD}</string>
+								<string name="ScriptGuid">{6B1E9FCD-4DB3-4972-96CF-ACF878922CCD}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -20379,7 +20384,7 @@ function Sampling.GenerateNoisePoly(Eta: number, Sigma: buffer, Nonce: number): 
 end
 
 return Sampling]]></ProtectedString>
-								<string name="ScriptGuid">{C4459F73-F7BD-4EA4-B141-36ECF38F0A2C}</string>
+								<string name="ScriptGuid">{DD8646FC-FB5F-4ADB-A1B7-12EA33DBE8AE}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -20730,7 +20735,7 @@ function Serialize.DecodeAt(Data: buffer, DataOffset: number, Poly: buffer, Poly
 end
 
 return Serialize]]></ProtectedString>
-								<string name="ScriptGuid">{29C92188-66BA-4829-8B0A-D0825F96D24F}</string>
+								<string name="ScriptGuid">{0CB3ED28-FAC3-4BD7-A254-8883060A3355}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -20869,7 +20874,7 @@ function Utils.GetKemCipherTextLen(K: number, Du: number, Dv: number): number
 end
 
 return Utils]]></ProtectedString>
-								<string name="ScriptGuid">{1B7E2447-B9C2-418A-AD7E-01BC05BE2F9F}</string>
+								<string name="ScriptGuid">{C682A1AB-8077-4AF7-BEDC-A42ADA34C57A}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -21294,7 +21299,7 @@ function XOF.Squeeze256(OutputBytes: number): buffer
 end
 
 return XOF]]></ProtectedString>
-								<string name="ScriptGuid">{AF0866C3-BE2D-44F5-946C-D8DDC7E3B46D}</string>
+								<string name="ScriptGuid">{D2CACA87-7A0D-4C9D-AF39-A00E5EC6AEEF}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -21891,7 +21896,7 @@ Mldsa.SecKeyLen = Utils.SecKeyLen
 Mldsa.SigLen = Utils.SigLen
 
 return Mldsa]]></ProtectedString>
-							<string name="ScriptGuid">{740242E9-6122-4480-AE29-F5995A074D40}</string>
+							<string name="ScriptGuid">{19769DC1-E7DA-4FBE-8842-49552DBD62A8}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -21978,7 +21983,7 @@ function Field.Divide(A: number, B: number): number
 end
 
 return Field]]></ProtectedString>
-								<string name="ScriptGuid">{3767000C-A76F-4D18-B258-6BA7A9D422CE}</string>
+								<string name="ScriptGuid">{8D883ACB-AB7B-43A2-A3A9-17D9671F6CAC}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -22150,7 +22155,7 @@ Ntt.ZETA_NEG_EXP = ZETA_NEG_EXP
 Ntt.INV_N = INV_N
 
 return Ntt]]></ProtectedString>
-								<string name="ScriptGuid">{922C5112-8828-4945-BA3A-D441FF405425}</string>
+								<string name="ScriptGuid">{B6AC48DE-EC5C-489D-A92D-18F7966DABA1}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -22587,7 +22592,7 @@ function BitPacking.DecodeHintBits(Arr: buffer, H: buffer, K: number, Omega: num
 end
 
 return BitPacking]]></ProtectedString>
-								<string name="ScriptGuid">{BC4A65E8-2D68-48C1-BF5B-C574F0E6CB9C}</string>
+								<string name="ScriptGuid">{0F37A094-B491-47CC-97F5-880B28B1EF29}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -22680,7 +22685,7 @@ function Params.CheckVerifyParams(K: number, L: number, D: number, Gamma1: numbe
 end
 
 return Params]]></ProtectedString>
-								<string name="ScriptGuid">{E4738850-6635-4D3D-A2BE-6C8690D70658}</string>
+								<string name="ScriptGuid">{09BB5262-8821-4FB4-B796-9D3947D317A2}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -23397,7 +23402,7 @@ function PolyVec.Copy(Src: buffer, Dst: buffer, K: number)
 end
 
 return PolyVec]]></ProtectedString>
-								<string name="ScriptGuid">{253B9C33-DF68-4843-A857-36494C183828}</string>
+								<string name="ScriptGuid">{64DE24BA-2BA1-4BFF-83CD-3B3AF35BA01C}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -23686,7 +23691,7 @@ function SHA3.SHAKE256(Message: buffer, OutputBytes: number): buffer
 end
 
 return SHA3]]></ProtectedString>
-								<string name="ScriptGuid">{19925930-A991-4F66-B456-FA5285B5E60D}</string>
+								<string name="ScriptGuid">{EB6777E6-05B6-49A3-A4B9-69E3D5BFDA23}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -24122,7 +24127,7 @@ function Sampling.SampleInBall(Seed: buffer, Poly: buffer, Tau: number, Lambda: 
 end
 
 return Sampling]]></ProtectedString>
-								<string name="ScriptGuid">{60BDA055-DD57-4760-A9C1-72D14E5F5739}</string>
+								<string name="ScriptGuid">{5DD0EF40-0DA8-415A-8407-A785EC08F5D8}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -24197,7 +24202,7 @@ function Utils.BitWidth(Value: number): number
 end
 
 return Utils]]></ProtectedString>
-								<string name="ScriptGuid">{A2C47992-8BDF-42E0-BBBC-E0E31B7DD55F}</string>
+								<string name="ScriptGuid">{B6A801CF-2CD0-400A-8C48-FDE51B0463DC}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -24622,7 +24627,7 @@ function XOF.Squeeze256(OutputBytes: number): buffer
 end
 
 return XOF]]></ProtectedString>
-								<string name="ScriptGuid">{1B80D96C-5454-4940-A35C-4260109CDA21}</string>
+								<string name="ScriptGuid">{170790BF-5C4B-440D-9040-5FA9AB06FD3F}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -25259,7 +25264,7 @@ CSPRNG.BytesLeft = GatherEntropy()
 GenerateBlock()
 
 return CSPRNG]]></ProtectedString>
-								<string name="ScriptGuid">{3C15CB49-2F8B-4797-9577-F490E1B0CE04}</string>
+								<string name="ScriptGuid">{0AABD399-A522-464E-A06A-3A60C60F29A8}</string>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
@@ -25571,7 +25576,7 @@ end
 return function(Message: buffer, Length: number?): buffer
 	return ProcessMessage(INITIAL_VECTORS, 0, Message, Length or 32)
 end]]></ProtectedString>
-									<string name="ScriptGuid">{51DF5D69-007C-497A-8BEC-1655BE521A9E}</string>
+									<string name="ScriptGuid">{B23A2F84-21EE-4530-A6BB-678C47F56F94}</string>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 									<bool name="DefinesCapabilities">false</bool>
@@ -25833,7 +25838,7 @@ local function ChaCha20(Data: buffer, Key: buffer, Nonce: buffer, Counter: numbe
 end
 
 return ChaCha20]]></ProtectedString>
-									<string name="ScriptGuid">{20DD82E4-819E-468A-A0F6-7C71006A7468}</string>
+									<string name="ScriptGuid">{2CC98D03-826D-4B13-8D04-027A47C36F2A}</string>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 									<bool name="DefinesCapabilities">false</bool>
@@ -25999,7 +26004,7 @@ function Conversions.FromHex(Hex: string | buffer): buffer
 end
 
 return Conversions]]></ProtectedString>
-									<string name="ScriptGuid">{A3309C61-CC2E-44A6-B725-A6447F4C7615}</string>
+									<string name="ScriptGuid">{2E53D1F4-78C3-4528-91EE-070DE9D02031}</string>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 									<bool name="DefinesCapabilities">false</bool>
@@ -26699,7 +26704,7 @@ end
 
 return (Testing :: any) :: TestingLib
 ]]></ProtectedString>
-						<string name="ScriptGuid">{35214B89-739F-499B-816E-D5D2EF2739F9}</string>
+						<string name="ScriptGuid">{0FF9CC69-183A-4C63-AA83-39EC14CBCDB0}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -26921,7 +26926,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{D88057C0-66A4-4F3F-906C-A9AF026D7DCE}</string>
+							<string name="ScriptGuid">{39AA5553-3297-45B6-9267-DE3592B3B653}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -27103,7 +27108,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{C4F576CB-A7D9-4299-9FB5-4A66DEBC2313}</string>
+							<string name="ScriptGuid">{ED44B4CE-BEBB-4D56-8203-6C441CAE9CF9}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -27152,7 +27157,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{0D8E6C7E-9E42-4C2A-B628-F2468C383B35}</string>
+							<string name="ScriptGuid">{4E9F7312-B302-4AA6-970E-F5925503D575}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -27203,7 +27208,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{68BF511F-A4B5-4405-92CB-59EE8D6AD2B3}</string>
+							<string name="ScriptGuid">{9F08A40F-EDB1-4782-A5F1-4E0693BDAF72}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -27573,7 +27578,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{E156985D-BCDB-4ADB-99E8-2E70C289D522}</string>
+							<string name="ScriptGuid">{A2F8987A-AA26-4F97-9943-E36C4FAC4F0F}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -27842,7 +27847,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{91E7C97C-06F0-4014-B219-7F35487C69BD}</string>
+							<string name="ScriptGuid">{992DDE33-06FC-4666-BABF-8B495EDCE183}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -27892,7 +27897,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{6AE5D47E-4B71-45D2-A04C-888C0061DB0B}</string>
+							<string name="ScriptGuid">{C27A1D38-7EF0-42E1-BAA6-3CA02FA4B794}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -28292,7 +28297,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{E5B7DF79-8790-4386-9287-EC645CA6D3A3}</string>
+							<string name="ScriptGuid">{1AF12899-CC86-4776-BA94-CAA6FFA38329}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -28433,7 +28438,7 @@ Testing.Complete()
 
 return 0
 ]]></ProtectedString>
-							<string name="ScriptGuid">{127E668E-59AC-4571-8552-7CC3961AD3FF}</string>
+							<string name="ScriptGuid">{6C57EEBD-7272-4C96-AB8B-D3A8A509A9AA}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -28605,7 +28610,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{703CC6C4-1D63-4670-B807-1C20C1CFA1AF}</string>
+							<string name="ScriptGuid">{93D1011A-C2E1-4CE4-82D4-B2E1EB030335}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -28766,7 +28771,7 @@ end
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{9D88F1B6-6501-40A5-A496-5E4AE27336A4}</string>
+							<string name="ScriptGuid">{36C928A8-0B3C-4302-A5DC-140BD2AA215B}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -28816,7 +28821,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{E4F5D418-19A9-4F3E-B736-3F703697C710}</string>
+							<string name="ScriptGuid">{BDA41190-4C63-4BC1-A517-1E2D3895675D}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -28866,7 +28871,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{9743BA0C-3ED2-4F82-881B-029105B7FD56}</string>
+							<string name="ScriptGuid">{5B4996E1-F4DC-476E-B69C-C4CF9316D125}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -28916,7 +28921,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{B4119EF2-3BD1-45EF-BE4E-AB60556CF8D9}</string>
+							<string name="ScriptGuid">{CA0F9EF5-D55A-4A0A-850E-5377EDD1D7DE}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -28966,7 +28971,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{EFAEF3C4-590F-41AC-8574-152DB480DCAD}</string>
+							<string name="ScriptGuid">{2B709FE4-CC8B-4C95-BF12-D4815249245D}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -29091,7 +29096,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{4A4B6391-1BA3-470E-BF24-ED55C4B5225C}</string>
+							<string name="ScriptGuid">{1C94DD6E-81A9-4911-88A5-5B33F6556A49}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -29141,7 +29146,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{EF511A36-1F90-4B18-8703-B3EC8BC4A807}</string>
+							<string name="ScriptGuid">{3954520F-ECB1-4F0C-929D-F21EC2ABBAAE}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -29191,7 +29196,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{D2794AE3-11CD-4FDD-9A25-495296E4A403}</string>
+							<string name="ScriptGuid">{8142C267-8F39-487D-B2E7-5031E361B906}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -29261,7 +29266,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{EEA947DE-8135-4F8E-B719-083245E80D04}</string>
+							<string name="ScriptGuid">{B1F0C58E-7978-4A78-84EB-36AAA08958BC}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -29446,7 +29451,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{340B10A2-A712-462A-A887-2BE547E6C099}</string>
+							<string name="ScriptGuid">{2561E0D9-23F0-4F08-AAA2-9BF5F013782E}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -29576,7 +29581,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{799133B8-CACB-4F58-A99C-AB62E6D02C57}</string>
+							<string name="ScriptGuid">{CE2904D2-7ABD-4E07-B2D7-E4CDB9BCB607}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -29984,7 +29989,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{2B806C42-BA8A-4BF8-BA2B-F48039BE9DE1}</string>
+							<string name="ScriptGuid">{7CBFCD34-8AB7-4FEF-983D-021B000155A8}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -30239,7 +30244,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{7CF820ED-8381-4267-BD37-8D604C419114}</string>
+							<string name="ScriptGuid">{6763FCB7-48F1-434F-982A-E5E95F4077F4}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -30455,7 +30460,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{327EBBF4-4D89-4103-BC40-4DAA74289FAD}</string>
+							<string name="ScriptGuid">{30D6AF18-4593-4E10-B42D-95DDF5C2D087}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -30604,7 +30609,7 @@ end)
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{92F73BFB-3A3C-4E9F-AA8B-10C84240D90D}</string>
+							<string name="ScriptGuid">{DC136230-D3E7-456B-8D8D-980D4A974E52}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -30754,7 +30759,7 @@ end
 Testing.Complete()
 
 return 0]]></ProtectedString>
-							<string name="ScriptGuid">{9584F48F-9707-4940-92DB-48A00993DED8}</string>
+							<string name="ScriptGuid">{0A254324-D4E6-4C3E-AD2E-0B70301929A9}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -30788,7 +30793,7 @@ decompressZlibWithDict=zlib.decompressZlibWithDict,
 calculateAdler32=zlib.adler32,
 createDictionary=zlib.createDictionary,
 }]]></ProtectedString>
-					<string name="ScriptGuid">{4805D7FF-7919-4C41-9162-EDBF31E35FE6}</string>
+					<string name="ScriptGuid">{0E3A2020-F399-4223-A64C-CC07B37FB934}</string>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
@@ -30854,7 +30859,7 @@ local compressionLevelConfigs:{{boolean|number?}}={
 }
 
 return compressionLevelConfigs]]></ProtectedString>
-						<string name="ScriptGuid">{EF998035-490F-47C2-AF15-51925027A615}</string>
+						<string name="ScriptGuid">{F56D8C6F-5A88-4898-865F-A9319877D47D}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -30949,7 +30954,7 @@ return(b*65536+a)%4294967296
 end
 
 return adler32]]></ProtectedString>
-						<string name="ScriptGuid">{35F12E18-D7CC-4541-8B36-BA6142B74CF8}</string>
+						<string name="ScriptGuid">{47FF98F4-04B1-487B-815A-4D66E5DB748B}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -31148,7 +31153,7 @@ return dictionary
 end
 
 return createDictionary]]></ProtectedString>
-						<string name="ScriptGuid">{16C639CD-89AF-49FA-9571-0F501C750B29}</string>
+						<string name="ScriptGuid">{871208FA-4A25-43C9-A6F9-87A186CFFE41}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -31168,7 +31173,7 @@ return(actual%4294967296)==(expected%4294967296)
 end
 
 return isEqualAdler32]]></ProtectedString>
-						<string name="ScriptGuid">{7E9E85FD-ABBA-4BD4-BCCB-88F861CE9CD0}</string>
+						<string name="ScriptGuid">{644E3BD6-2149-4F21-8C6F-FD6477074021}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -33551,7 +33556,7 @@ _fix_block_dist_huffman_bitlen,
 end
 
 return LibDeflate]]></ProtectedString>
-						<string name="ScriptGuid">{F0E20333-FBA6-4262-A7CC-C5AAEF1A9AEA}</string>
+						<string name="ScriptGuid">{5AC4347C-A583-46EC-9BE1-49A0F7E35673}</string>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
@@ -33646,7 +33651,7 @@ return{
 push=minHeapPush,
 pop=minHeapPop,
 }]]></ProtectedString>
-							<string name="ScriptGuid">{DF6C5B7E-E4DE-4971-B875-7CF09D34EAB3}</string>
+							<string name="ScriptGuid">{02E998A2-F9A0-412B-B55A-D224BA4495BE}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -33733,7 +33738,7 @@ return{
 getStoreBlockSize=getStoreBlockSize,
 compressStoreBlock=compressStoreBlock,
 }]]></ProtectedString>
-							<string name="ScriptGuid">{2E89AA69-F697-4357-88C4-6E3B9F5FA822}</string>
+							<string name="ScriptGuid">{B778A097-924D-41F4-B6EC-1485F04AEF57}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -34140,7 +34145,7 @@ return lcodes,lextra_bits,lcodes_counts,dcodes,dextra_bits,dcodes_counts
 end
 
 return getBlockLZ77Result]]></ProtectedString>
-							<string name="ScriptGuid">{D8AB4648-90EA-4999-B554-16D25C2F9F12}</string>
+							<string name="ScriptGuid">{2DAEE42E-8FFE-4A6F-B645-03A28EE54E6F}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -34227,7 +34232,7 @@ return true,''
 end
 
 return isValidArguments]]></ProtectedString>
-							<string name="ScriptGuid">{34062D68-3EEF-4CBF-B1A1-B96FED1E9E36}</string>
+							<string name="ScriptGuid">{8CD73829-F3EF-4261-A87D-37F5DF667009}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -34268,7 +34273,7 @@ return t
 end
 
 return loadStringToTable]]></ProtectedString>
-							<string name="ScriptGuid">{45F02B21-0836-41AD-8C1A-6618AB6AC823}</string>
+							<string name="ScriptGuid">{FF1728CE-DC49-494E-A884-674FABAA9E3C}</string>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
@@ -38680,9 +38685,9 @@ return loadStringToTable]]></ProtectedString>
 							<Ref name="SelectionImageObject">null</Ref>
 							<int name="SelectionOrder">0</int>
 							<UDim2 name="Size">
-								<XS>0.400000006</XS>
+								<XS>0.5</XS>
 								<XO>0</XO>
-								<YS>0.25</YS>
+								<YS>0.75</YS>
 								<YO>0</YO>
 							</UDim2>
 							<token name="SizeConstraint">0</token>
@@ -41104,7 +41109,7 @@ end
 
 return UpdateChecker
 ]]></ProtectedString>
-					<string name="ScriptGuid">{C8901ABA-ADB9-443A-93B6-62E444F2CE35}</string>
+					<string name="ScriptGuid">{A7108B80-0B1B-4D04-9833-F1160CF491FA}</string>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
