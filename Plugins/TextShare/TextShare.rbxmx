@@ -24,7 +24,7 @@ local StudioService = game:GetService("StudioService")
 local MyPlayer = Players.LocalPlayer
 local myName = MyPlayer and MyPlayer.Name or "LocalPlayer"
 
-local version = "v0.1.9"
+local version = "v0.2.0"
 
 local MPL = require("@self/MPL")
 
@@ -185,7 +185,7 @@ local ti3 = TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
 local active = 0
 
-local function notify(Thumbnail, Message, parent)
+local function notify(Thumbnail, Message, parent, persistent)
 	local popup = script.Popup:Clone()
 
 	active += 1
@@ -216,7 +216,7 @@ local function notify(Thumbnail, Message, parent)
 	
 	local disconnects = {}
 	
-	local timer = math.min(10, 3+(#Message/35))
+	local timer = persistent and math.huge or math.min(10, 3+(#Message/35))
 	local timerBroke = false
 	
 	task.spawn(function()
@@ -796,6 +796,17 @@ if not Networking then
 	script.Overlay.Parent = Window
 end
 
+
+local UpdateChecker = require(script.UpdateChecker)
+
+local OWNER = "madnessmyth"
+local REPO  = "Roblox-Modules"
+local BRANCH = "main"
+
+local verRes = UpdateChecker.CheckVersionFile(OWNER, REPO, BRANCH, "Plugins/TextShare/LatestVersion", version)
+if verRes.ok and verRes.updateAvailable then
+	warn(("Update available: %s -> %s (%s)"):format(verRes.current, verRes.latest, verRes.url))
+end
 ]]></ProtectedString>
 				<bool name="Disabled">false</bool>
 				<Content name="LinkedSource"><null></null></Content>
@@ -38276,6 +38287,136 @@ return loadStringToTable]]></ProtectedString>
 						</Item>
 					</Item>
 				</Item>
+			</Item>
+			<Item class="ModuleScript" referent="RBXFBA5D4DB07A84243BD1DB34CC05AD6FF">
+				<Properties>
+					<Content name="LinkedSource"><null></null></Content>
+					<ProtectedString name="Source"><![CDATA[--!nocheck
+local HttpService = game:GetService("HttpService")
+
+local UpdateChecker = {}
+
+local CACHE_SECONDS = 120
+
+type FetchResult = {
+	ok: boolean,
+	status: number,
+	body: string?,
+	error: string?,
+}
+
+local cache: {[string]: {t:number, res:FetchResult}} = {}
+
+local function fetchText(url: string): FetchResult
+	local now = os.clock()
+	local c = cache[url]
+	if c and (now - c.t) < CACHE_SECONDS then
+		return c.res
+	end
+
+	local ok, resp = pcall(function()
+		return HttpService:RequestAsync({
+			Url = url,
+			Method = "GET",
+			Headers = {
+				["Cache-Control"] = "no-cache",
+			},
+		})
+	end)
+
+	if not ok then
+		local res: FetchResult = { ok = false, status = 0, error = tostring(resp) }
+		cache[url] = { t = now, res = res }
+		return res
+	end
+
+	local r = resp :: any
+	local res: FetchResult = {
+		ok = (r.Success == true),
+		status = tonumber(r.StatusCode) or 0,
+		body = r.Body,
+		error = r.Success and nil or (r.StatusMessage or "Request failed"),
+	}
+
+	cache[url] = { t = now, res = res }
+	return res
+end
+
+local function parseVer(v: string): {number}
+	v = v:gsub("^%s+", ""):gsub("%s+$", "")
+	v = v:gsub("^v", "")
+	local out = {}
+	for n in v:gmatch("%d+") do
+		out[#out+1] = tonumber(n) or 0
+	end
+	while #out < 3 do out[#out+1] = 0 end
+	return out
+end
+
+local function isNewer(latest: string, current: string): boolean
+	local a = parseVer(latest)
+	local b = parseVer(current)
+	local n = math.max(#a, #b)
+	for i = 1, n do
+		local ai = a[i] or 0
+		local bi = b[i] or 0
+		if ai ~= bi then
+			return ai > bi
+		end
+	end
+	return false
+end
+
+
+function UpdateChecker.ReadGitHubRaw(owner: string, repo: string, branch: string, filePath: string): FetchResult
+	local url = ("https://raw.githubusercontent.com/%s/%s/%s/%s"):format(owner, repo, branch, filePath)
+	return fetchText(url)
+end
+
+type VersionCheckResult = {
+	ok: boolean,
+	current: string,
+	latest: string?,
+	updateAvailable: boolean?,
+	url: string?,
+	error: string?,
+}
+
+function UpdateChecker.CheckVersionFile(owner: string, repo: string, branch: string, versionFilePath: string, currentVersion: string): VersionCheckResult
+	local r = UpdateChecker.ReadGitHubRaw(owner, repo, branch, versionFilePath)
+	if not r.ok or not r.body then
+		return {
+			ok = false,
+			current = currentVersion,
+			error = ("HTTP %d: %s"):format(r.status, r.error or "unknown error"),
+		}
+	end
+
+	local latest = r.body:gsub("^%s+", ""):gsub("%s+$", "")
+	if latest == "" then
+		return { ok = false, current = currentVersion, error = "version file is empty" }
+	end
+
+	local update = isNewer(latest, currentVersion)
+	return {
+		ok = true,
+		current = currentVersion,
+		latest = latest,
+		updateAvailable = update,
+		url = ("https://github.com/%s/%s"):format(owner, repo),
+	}
+end
+
+return UpdateChecker
+]]></ProtectedString>
+					<string name="ScriptGuid">{C8901ABA-ADB9-443A-93B6-62E444F2CE35}</string>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">UpdateChecker</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
 			</Item>
 		</Item>
 	</Item>
