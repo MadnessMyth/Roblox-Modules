@@ -536,7 +536,6 @@ if Networking then
 	end
 
 	self:EachRemoteBridge(TextMedialine, function(Firer, BridgeObject, Image, ImageSizeX, ImageSizeY, msgid, spoilered, RealImageSizeX, RealImageSizeY)
-		print(Firer, BridgeObject, "image", ImageSizeX, ImageSizeY, msgid, spoilered, RealImageSizeX, RealImageSizeY)
 		if msgid then
 			if table.find(ignoreids, msgid) then
 				return
@@ -1888,7 +1887,6 @@ function MPLmetadata:SetSetting(name, value)
 	if MPL.Config.AutomaticSetSettingValidation then
 		local result = self:GetSetting(name)
 		if result ~= value then
-			print("Set setting failure, reporting output..")
 			performCheck()
 			self:__error(`Set setting failed. Key: "{name}", Value: "{value}", Result: "{result}"`)
 		end
@@ -26192,14 +26190,12 @@ local function RunTest(Function: () -> (), Info: TestInfo)
 		local Value = DeferQueue[Index]
 		local Success = pcall(Value)
 		if not Success then
-			print(`Deferred function failed`)
 		end
 	end
 	table.clear(DeferQueue)
 
 	local TestType = Ok and "PASS" or "FAIL"
 	if Ok then
-		print(`{TestType}{Scope} [{FormatTime(TimeLength)}]`)
 	else
 		Testing.Failed += 1
 		warn(`{TestType}{Scope} [{FormatTime(TimeLength)}]`)
@@ -26229,8 +26225,7 @@ function Testing.Describe(Name: string, Function: (...any) -> ...any): ()
 	table.remove(ScopeStack)
 	if not Ok then
 		Testing.Failed += 1
-		print(`{Line}: Describe("{Name}", ...):`)
-		print(`{Error}`)
+
 	end
 end
 
