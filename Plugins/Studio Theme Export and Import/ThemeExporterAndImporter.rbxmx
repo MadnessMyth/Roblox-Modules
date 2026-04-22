@@ -1,0 +1,74 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<External>null</External>
+	<External>nil</External>
+	<Item class="Script" referent="RBX157859E679C04E63B1DBEB09A3751E6A">
+		<Properties>
+			<ProtectedString name="Source"><![CDATA[local ReflectionService = game:GetService("ReflectionService")
+local StudioService = game:GetService("StudioService")
+local HttpService = game:GetService("HttpService")
+
+local toolbar = plugin:CreateToolbar("Theme Export and Import")
+local exportButton = toolbar:CreateButton("Export", "Export Studio Theme", "rbxassetid://83856799245957", "Export")
+local importButton = toolbar:CreateButton("Import", "Import Studio Theme", "rbxassetid://99385102861455", "Import")
+
+local function saveFile(text)
+	local script = Instance.new("ModuleScript", game.CoreGui)
+	script.Name = "studiotheme"
+	script.Source = text
+	game.Selection:Set({script})
+	plugin:PromptSaveSelectionAsync("studiotheme")
+	script:Destroy()
+end
+
+local function export()
+	local data = {}
+	local theme = settings().Studio
+
+	for _,v in ReflectionService:GetPropertiesOfClass(theme.ClassName) do
+		pcall(function()
+			local value = theme[v.Name]
+			if typeof(value) == "Color3" then
+				data[v.Name] = {value.R, value.G, value.B}
+			end
+		end)
+	end
+
+	return HttpService:JSONEncode(data)
+end
+
+local function import(data)
+	local theme = settings().Studio
+	
+	for i,v in HttpService:JSONDecode(data) do
+		pcall(function()
+			theme[i] = Color3.new(v[1], v[2], v[3])
+		end)
+	end
+end
+
+exportButton.Click:Connect(function()
+	saveFile(
+		export()
+	)
+end)
+
+importButton.Click:Connect(function()
+	local file = StudioService:PromptImportFileAsync({"luau", "json", "lua"}) :: File
+	
+	if file then
+		import(file:GetBinaryContents())
+	end
+end)]]></ProtectedString>
+			<bool name="Disabled">false</bool>
+			<Content name="LinkedSource"><null></null></Content>
+			<token name="RunContext">0</token>
+			<string name="ScriptGuid">{B61AB2C4-32E0-463B-BFE9-CF568301701C}</string>
+			<BinaryString name="AttributesSerialize"></BinaryString>
+			<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+			<bool name="DefinesCapabilities">false</bool>
+			<string name="Name">Script</string>
+			<int64 name="SourceAssetId">-1</int64>
+			<BinaryString name="Tags"></BinaryString>
+		</Properties>
+	</Item>
+</roblox>
